@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NFL Player Stats Viewer</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'nonce-random_nonce_value';">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div id="app">
@@ -15,14 +15,16 @@
         <h2>Players by Season</h2>
         <input v-model="season" type="number" placeholder="Enter a season" />
         <button @click="fetchPlayersBySeason">Get Players</button>
-        <div v-if="filteredPlayers.length">
-            <div v-for="group in groupedPlayers" :key="group.team">
-                <h3 @click="toggleGroup(group.team)">{{ group.team }}</h3>
-                <ul v-show="group.expanded">
-                    <li v-for="player in group.players" :key="player.Player">
-                        {{ player.Player }} ({{ player.Season }})
-                    </li>
-                </ul>
+        <div v-if="groupedPlayers.length">
+            <div class="team-grid">
+                <div v-for="group in groupedPlayers" :key="group.team" class="team-group">
+                    <h3 @click="toggleGroup(group.team)">{{ group.team }}</h3>
+                    <ul v-show="group.expanded">
+                        <li v-for="player in group.players" :key="player.Player">
+                            {{ player.Player }} ({{ player.Season }})
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -30,7 +32,7 @@
     <!-- Section to search for player stats -->
     <div>
         <h2>Search Player Stats</h2>
-        <input v-model="playerName" type="text" placeholder="Enter player name" />
+        <input v-model="filterText" type="text" placeholder="Search by player name" @input="filterPlayersByName"/>
         <button @click="fetchPlayerStats">Get Player Stats</button>
         <table>
             <thead>
@@ -68,7 +70,6 @@
         data() {
             return {
                 season: '',
-                playerName: '',
                 filterText: '',
                 players: [],
                 filteredPlayers: [],
@@ -77,6 +78,7 @@
                 filteredPlayerStats: [],
                 sortColumn: '',
                 sortOrder: 'asc',
+                debounceTimeout: null, // Declare the debounce timeout here
             };
         },
         methods: {
@@ -132,17 +134,17 @@
             },
 
             async fetchPlayerStats() {
-                if (!this.playerName) {
+                const filter = this.filterText; // Use the filterText for player name filtering
+                const sortBy = this.sortColumn || 'Season';  // Default sorting by 'Season'
+                const sortOrder = this.sortOrder;  // Default to ascending order
+
+                if (!filter) {
                     alert("Please enter a player name.");
                     return;
                 }
 
-                const filter = this.filterText; // For player name filtering
-                const sortBy = this.sortColumn || 'Season';  // Default sorting by 'Season'
-                const sortOrder = this.sortOrder;  // Default to ascending order
-
                 try {
-                    const result = await window.api.getPlayerStats(this.playerName, sortBy, sortOrder, filter);
+                    const result = await window.api.getPlayerStats(filter, sortBy, sortOrder);
                     if (result.error) {
                         alert("Error fetching player stats: " + result.error);
                     } else {
@@ -154,17 +156,17 @@
                 }
             },
 
+            // Filter the players based on the name typed in the search box
             filterPlayersByName() {
-                this.filteredPlayers = this.players.filter(player => {
-                    return player.Player.toLowerCase().includes(this.filterText.toLowerCase());
-                });
-                this.groupPlayersByTeam(); // Re-group players by team after filtering
-            },
-
-            filterStats() {
-                this.filteredPlayerStats = this.playerStats.filter(stat => {
-                    return stat.Player.toLowerCase().includes(this.filterText.toLowerCase());
-                });
+                clearTimeout(this.debounceTimeout); // Clear previous timeout
+                this.debounceTimeout = setTimeout(() => {
+                    // Filter players based on partial matches of name or first letter
+                    this.filteredPlayers = this.players.filter(player => {
+                        const searchTerm = this.filterText.toLowerCase();
+                        return player.Player.toLowerCase().includes(searchTerm);
+                    });
+                    this.groupPlayersByTeam(); // Re-group players after filtering
+                }, 300);
             },
 
             sortData(column) {
@@ -185,7 +187,6 @@
         watch: {
             filterText() {
                 this.filterPlayersByName();
-                this.filterStats();
             }
         }
     });

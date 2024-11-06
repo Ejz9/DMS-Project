@@ -1,0 +1,29 @@
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjusts to screen size */
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.team-group {
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.team-group h3 {
+    cursor: pointer;
+    font-size: 1.2em;
+    margin: 0;
+}
+
+.team-group ul {
+    margin-top: 10px;
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.team-group li {
+    font-size: 1em;
+}
