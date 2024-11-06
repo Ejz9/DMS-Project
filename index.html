@@ -3,25 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Electron Vue App</title>
-    <!-- Content-Security-Policy for development, remove 'unsafe-eval' in production -->
+    <title>NFL Player Stats Viewer</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'nonce-random_nonce_value';">
 </head>
 <body>
-<div id="app">{{ message }}</div>
+<div id="app">
+    <h1>NFL Player Stats</h1>
 
-<!-- Include Vue -->
+    <!-- Section to select season and display players -->
+    <div>
+        <h2>Players by Season</h2>
+        <input v-model="season" type="number" placeholder="Enter a season" />
+        <button @click="fetchPlayersBySeason">Get Players</button>
+        <ul>
+            <li v-for="player in players" :key="player.Player">{{ player.Player }}</li>
+        </ul>
+    </div>
+
+    <!-- Section to search for player stats -->
+    <div>
+        <h2>Search Player Stats</h2>
+        <input v-model="playerName" type="text" placeholder="Enter player name" />
+        <button @click="fetchPlayerStats">Get Player Stats</button>
+        <ul>
+            <li v-for="stat in playerStats" :key="stat.id">{{ stat.Season }} - {{ stat.Player }}</li>
+            <!-- Adjust display as necessary for specific stats in the row -->
+        </ul>
+    </div>
+</div>
+
+
 <script src="./node_modules/vue/dist/vue.global.js"></script>
 
-<!-- Initialize Vue App -->
 <script nonce="random_nonce_value">
     const { createApp } = Vue;
 
     const app = createApp({
         data() {
             return {
-                message: 'Hello from Vue in Electron!'
+                season: '',
+                playerName: '',
+                players: [],
+                playerStats: []
             };
+        },
+        methods: {
+            async fetchPlayersBySeason() {
+                if (!this.season) {
+                    alert("Please enter a season.");
+                    return;
+                }
+
+                const result = await window.api.getPlayersBySeason(this.season);
+                if (result.error) {
+                    alert("Error fetching players: " + result.error);
+                } else {
+                    this.players = result;
+                }
+            },
+            async fetchPlayerStats() {
+                if (!this.playerName) {
+                    alert("Please enter a player name.");
+                    return;
+                }
+
+                const result = await window.api.getPlayerStats(this.playerName);
+                if (result.error) {
+                    alert("Error fetching player stats: " + result.error);
+                } else {
+                    this.playerStats = result;
+                }
+            }
         }
     });
 
