@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Electron Vue App</title>
+    <!-- Content-Security-Policy for development, remove 'unsafe-eval' in production -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'nonce-random_nonce_value';">
+</head>
+<body>
+<div id="app">{{ message }}</div>
+
+<!-- Include Vue -->
+<script src="./node_modules/vue/dist/vue.global.js"></script>
+
+<!-- Initialize Vue App -->
+<script nonce="random_nonce_value">
+    const { createApp } = Vue;
+
+    const app = createApp({
+        data() {
+            return {
+                message: 'Hello from Vue in Electron!'
+            };
+        }
+    });
+
+    app.mount('#app');
+</script>
+</body>
+</html>
