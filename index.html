@@ -15,9 +15,16 @@
         <h2>Players by Season</h2>
         <input v-model="season" type="number" placeholder="Enter a season" />
         <button @click="fetchPlayersBySeason">Get Players</button>
-        <ul>
-            <li v-for="player in players" :key="player.Player">{{ player.Player }}</li>
-        </ul>
+        <div v-if="filteredPlayers.length">
+            <div v-for="group in groupedPlayers" :key="group.team">
+                <h3 @click="toggleGroup(group.team)">{{ group.team }}</h3>
+                <ul v-show="group.expanded">
+                    <li v-for="player in group.players" :key="player.Player">
+                        {{ player.Player }} ({{ player.Season }})
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <!-- Section to search for player stats -->
@@ -25,13 +32,32 @@
         <h2>Search Player Stats</h2>
         <input v-model="playerName" type="text" placeholder="Enter player name" />
         <button @click="fetchPlayerStats">Get Player Stats</button>
-        <ul>
-            <li v-for="stat in playerStats" :key="stat.id">{{ stat.Season }} - {{ stat.Player }}</li>
-            <!-- Adjust display as necessary for specific stats in the row -->
-        </ul>
+        <table>
+            <thead>
+            <tr>
+                <th @click="sortData('Player')">Player</th>
+                <th @click="sortData('Season')">Season</th>
+                <th @click="sortData('Tm')">Team</th>
+                <th @click="sortData('Age')">Age</th>
+                <th @click="sortData('Pos')">Position</th>
+                <th @click="sortData('Pts')">Points</th>
+                <!-- Add other columns as needed -->
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="stat in filteredPlayerStats" :key="stat.id">
+                <td>{{ stat.Player }}</td>
+                <td>{{ stat.Season }}</td>
+                <td>{{ stat.Tm }}</td>
+                <td>{{ stat.Age }}</td>
+                <td>{{ stat.Pos }}</td>
+                <td>{{ stat.Pts }}</td>
+                <!-- Add other columns as needed -->
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
-
 
 <script src="./node_modules/vue/dist/vue.global.js"></script>
 
@@ -43,8 +69,14 @@
             return {
                 season: '',
                 playerName: '',
+                filterText: '',
                 players: [],
-                playerStats: []
+                filteredPlayers: [],
+                groupedPlayers: [], // This will hold the grouped players by team
+                playerStats: [],
+                filteredPlayerStats: [],
+                sortColumn: '',
+                sortOrder: 'asc',
             };
         },
         methods: {
@@ -54,30 +86,111 @@
                     return;
                 }
 
-                const result = await window.api.getPlayersBySeason(this.season);
-                if (result.error) {
-                    alert("Error fetching players: " + result.error);
-                } else {
-                    this.players = result;
+                const filter = this.filterText; // For player name filtering
+                try {
+                    const result = await window.api.getPlayersBySeason(this.season, filter);
+                    if (result.error) {
+                        alert("Error fetching players: " + result.error);
+                    } else {
+                        this.players = result;
+                        this.filteredPlayers = result; // Initialize with all player data
+                        this.groupPlayersByTeam(); // Group players by team
+                    }
+                } catch (error) {
+                    alert("Error fetching players: " + error);
                 }
             },
+
+            groupPlayersByTeam() {
+                // Group players by team
+                const grouped = this.filteredPlayers.reduce((groups, player) => {
+                    // Normalize and trim the 'Tm' value
+                    const team = (player.Tm && player.Tm.trim().length === 3) ? player.Tm.trim().toUpperCase() : 'Unknown';
+
+                    // Group players by team
+                    if (!groups[team]) {
+                        groups[team] = [];
+                    }
+                    groups[team].push(player);
+                    return groups;
+                }, {});
+
+                // Convert grouped players into an array for rendering
+                this.groupedPlayers = Object.keys(grouped).map(team => ({
+                    team: team,
+                    players: grouped[team],
+                    expanded: false // Initially set all groups to collapsed
+                }));
+            },
+
+            toggleGroup(team) {
+                // Toggle the expansion of the group
+                const group = this.groupedPlayers.find(group => group.team === team);
+                if (group) {
+                    group.expanded = !group.expanded;
+                }
+            },
+
             async fetchPlayerStats() {
                 if (!this.playerName) {
                     alert("Please enter a player name.");
                     return;
                 }
 
-                const result = await window.api.getPlayerStats(this.playerName);
-                if (result.error) {
-                    alert("Error fetching player stats: " + result.error);
-                } else {
-                    this.playerStats = result;
+                const filter = this.filterText; // For player name filtering
+                const sortBy = this.sortColumn || 'Season';  // Default sorting by 'Season'
+                const sortOrder = this.sortOrder;  // Default to ascending order
+
+                try {
+                    const result = await window.api.getPlayerStats(this.playerName, sortBy, sortOrder, filter);
+                    if (result.error) {
+                        alert("Error fetching player stats: " + result.error);
+                    } else {
+                        this.playerStats = result;
+                        this.filteredPlayerStats = result; // Initialize with all player stats data
+                    }
+                } catch (error) {
+                    alert("Error fetching player stats: " + error);
                 }
+            },
+
+            filterPlayersByName() {
+                this.filteredPlayers = this.players.filter(player => {
+                    return player.Player.toLowerCase().includes(this.filterText.toLowerCase());
+                });
+                this.groupPlayersByTeam(); // Re-group players by team after filtering
+            },
+
+            filterStats() {
+                this.filteredPlayerStats = this.playerStats.filter(stat => {
+                    return stat.Player.toLowerCase().includes(this.filterText.toLowerCase());
+                });
+            },
+
+            sortData(column) {
+                const isAsc = this.sortOrder === 'asc';
+                this.sortColumn = column;
+                this.sortOrder = isAsc ? 'desc' : 'asc'; // Toggle sorting order
+
+                // Sort the player stats or players based on the selected column and order
+                this.filteredPlayerStats.sort((a, b) => {
+                    const aVal = a[column];
+                    const bVal = b[column];
+                    if (aVal < bVal) return isAsc ? -1 : 1;
+                    if (aVal > bVal) return isAsc ? 1 : -1;
+                    return 0;
+                });
+            }
+        },
+        watch: {
+            filterText() {
+                this.filterPlayersByName();
+                this.filterStats();
             }
         }
     });
 
-    app.mount('#app');
+    app.mount("#app");
 </script>
 </body>
 </html>
