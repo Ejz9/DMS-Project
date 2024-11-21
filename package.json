@@ -23,8 +23,11 @@
     "vite-plugin-static-copy": "^2.1.0"
   },
   "dependencies": {
+    "@ntohq/buefy-next": "^0.1.4",
+    "buefy": "npm:@ntohq/buefy-next@^0.1.4",
     "sqlite3": "^5.1.7",
     "vue": "^3.5.12",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "vuetify": "^3.7.0-beta.1"
   }
 }

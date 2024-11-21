@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' http://localhost:5173; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com;">
+    <meta
+            http-equiv="Content-Security-Policy"
+            content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' http://localhost:5173;
+    style-src 'self' 'unsafe-inline' fonts.googleapis.com https://cdn.jsdelivr.net https://use.fontawesome.com;
+    font-src 'self' fonts.gstatic.com https://cdn.jsdelivr.net https://use.fontawesome.com;
+    img-src 'self' https://raw.githubusercontent.com;
+  "
+    />
     <title>Electron Vue App</title>
 </head>
 <body>

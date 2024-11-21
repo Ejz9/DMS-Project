@@ -1,10 +1,19 @@
 <template>
-  <div>
-    <h2>Welcome to the NFL Stats Viewer</h2>
-    <p>Explore players, teams, and more!</p>
+  <div class="container">
 
     <!-- Search Box -->
-    <input id="searchBox" v-model="searchQuery" @input="handleInput()" type="text" placeholder="Search for stats:" />
+    <div class="search-container">
+      <b-field label="Search for stats:">
+        <b-input
+            id="searchBox"
+            v-model="searchQuery"
+            @input="handleInput()"
+            type="text"
+            placeholder="Search for stats:"
+            class="input is-medium"
+        ></b-input>
+      </b-field>
+    </div>
 
     <!-- Display currently searching value -->
     <p>Currently searching for: {{ searchQuery }}</p>
@@ -14,32 +23,31 @@
     <p v-else v-if="searchQuery.length > 0">No results found</p>
 
     <!-- List of search results -->
-    <ul v-if="results.length > 0">
-      <li v-for="(result, index) in results" :key="index">
+    <ul v-if="results.length > 0" class="list">
+      <li v-for="(result, index) in results" :key="index" class="list-item">
         <a @click="goToResultPage(result)">{{ result.name }}</a> <!-- Replace 'name' with your result's property -->
       </li>
     </ul>
 
-    <h3>Criteria to search by:</h3>
-    <ul>
-      <li><b>Player Name:</b> <em>Firstname Lastname, Firstname, or Lastname</em></li>
-      <li><b>Player Age:</b> <em>Age</em></li>
-      <li><b>Team Name:</b> <em>Team-name</em></li>
-    </ul>
+    <b-message title="Search Criteria" type="is-info">
+      <ul>
+        <li><b>Player Name:</b> <em>Firstname Lastname, Firstname, or Lastname</em></li>
+        <li><b>Player Age:</b> <em>Age</em></li>
+        <li><b>Team Name:</b> <em>Team-name</em></li>
+      </ul>
+    </b-message>
   </div>
 </template>
-<script>
-//import {getPlayersBySeason} from "@/electron/database.js";
 
+<script>
 export default {
-  data() { //Allows for reactivity on the page.
-    return { //returns the method.
-      searchQuery: "", //Holds the value of the input box.
-      results: [], //Array to store search results
+  data() {
+    return {
+      searchQuery: "",
+      results: [],
     };
   },
   methods: {
-    //Checks if input is a number or text.
     handleInput() {
       if (this.isNumeric(this.searchQuery)) {
         let length = this.searchQuery.length;
@@ -54,20 +62,19 @@ export default {
           }
         }
       } else {
-        this.searchForPlayer(this.searchQuery); //Handle Text Based Searches
+        this.searchForPlayer(this.searchQuery);
       }
     },
 
-    //Method to check if a value is numeric
     isNumeric(value) {
       return !isNaN(value) && value.trim() !== '';
     },
 
-    //Mock method to example the output. Need to process the input and filter the output as searching.
     searchForPlayer() {
       if (this.searchQuery.length > 0) {
-        this.results = [{name: "Tom Brady"}, {name: "Aaron Rodgers" }];
+        this.results = [{ name: "Tom Brady" }, { name: "Aaron Rodgers" }];
       } else {
+        this.results = [];
       }
     },
 
@@ -78,9 +85,55 @@ export default {
   }
 };
 </script>
-<style>
-body {
-  background-color: #333;
-  font-family: 'Arial', sans-serif;
+
+<style scoped>
+/* Centering content using flexbox */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.search-container {
+  width: 100%;
+  display: compact;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+/* Shrink and center the search box */
+.input {
+  width: 50%; /* Controls size of the search box */
+  max-width: 500px; /* Max width */
+  padding: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.list-item {
+  margin: 0.5em 0;
+  padding: 0.5em;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+.list-item:hover {
+  background-color: #e8e8e8;
+  cursor: pointer;
+}
+
+/* Message Box Styling */
+b-message {
+  margin-top: 2rem;
 }
 </style>
