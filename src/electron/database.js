@@ -1,7 +1,9 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+import sqlite3 from 'sqlite3'; // ES module import
+import path from 'path';
 
-const dbPath = path.join(__dirname, 'DMS-Project.sqlite');
+const dbPath = path.resolve('DMS-Project.sqlite');
+
+// Open the SQLite database
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error opening database:', err.message);
@@ -11,7 +13,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
 });
 
 // Function to get players for a specific season with optional player name filtering
-function getPlayersBySeason(season, filter = '') {
+export function getPlayersBySeason(season, filter = '') {
     return new Promise((resolve, reject) => {
         let query = 'SELECT Player, Tm FROM NFL_Player_Stats_1922 WHERE Season = ?';
         let params = [season];
@@ -32,9 +34,8 @@ function getPlayersBySeason(season, filter = '') {
     });
 }
 
-
 // Function to get stats for a specific player, with sorting and filtering capabilities
-function getPlayerStats(player, sortBy = 'Season', sortOrder = 'ASC', filter = '') {
+export function getPlayerStats(player, sortBy = 'Season', sortOrder = 'ASC', filter = '') {
     return new Promise((resolve, reject) => {
         let query = 'SELECT * FROM NFL_Player_Stats_1922 WHERE Player = ?';
         let params = [player];
@@ -58,7 +59,8 @@ function getPlayerStats(player, sortBy = 'Season', sortOrder = 'ASC', filter = '
     });
 }
 
-module.exports = {
+// Add this export to enable the default import in main.js
+export default {
     getPlayersBySeason,
     getPlayerStats
 };

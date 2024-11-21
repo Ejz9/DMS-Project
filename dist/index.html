@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' http://localhost:5173; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com;">
+    <title>Electron Vue App</title>
+</head>
+<body>
+<div id="app"></div>
+
+<!-- In Development, load from Vite dev server -->
+<script type="module">
+    if (window.location.hostname === 'localhost') {
+        // Load from Vite dev server in development
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = 'http://localhost:5173/src/main.js';  // Vite dev server path
+        document.body.appendChild(script);
+    } else {
+        // In production, load from dist folder
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = './assets/main-mOnHkPyB.js';  // Path to bundled file
+        document.body.appendChild(script);
+    }
+</script>
+
+</body>
+</html>
