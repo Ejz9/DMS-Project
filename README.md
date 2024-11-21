@@ -17,8 +17,6 @@ Next, you will want to run:
 Now you should be able to run the application typing:
 `npm run start` in your terminal. Or by going to the package.json and hovering to run in VS or clicking the green play in WebStorm
 
-Create a `.gitignore` file and add the path: `/node_modules/` so that you aren't trying to upload all of the projects packages.
-
 ## How to access or manipulate the database:
 There are three options based on what I've covered with VSCode and Jet Brains.
 - Use JetBrains Webstorm and manage the database from the button on the right (the same as openining it in DataGrip).
