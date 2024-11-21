@@ -10,7 +10,7 @@
     "build": "vite build",
     "start": "npm run build && electron src/electron/main.js"
   },
-  "author": "Edward Zurakowski",
+  "author": "Edward Zurakowski, Nina Malak, Zak ",
   "license": "ISC",
   "description": "",
   "devDependencies": {
