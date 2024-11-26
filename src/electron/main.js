@@ -89,6 +89,64 @@ app.whenReady().then(() => {
             return { error: err.message };
         }
     });
+    ipcMain.handle('get-games-played', async (event, playerName, seasonYear) => {
+        try {
+            return await database.getGamesPlayed(playerName, seasonYear); // Fetch total games played
+        } catch (err) {
+            console.error('Error fetching games played:', err);
+            return { error: err.message };
+        }
+    });
+    ipcMain.handle('get-games-scored', async (event, playerName, seasonYear) => {
+        try {
+            return await database.getGamesScored(playerName, seasonYear); // Fetch total games scored
+        } catch (err) {
+            console.error('Error fetching games scored:', err);
+            return { error: err.message };
+        }
+    });
+    ipcMain.handle('get-total-games-scored', async (event, playerName) => {
+        try {
+            return await database.getTotalGamesScored(playerName); // Fetch total games scored
+        } catch (err) {
+            console.error('Error fetching total games scored:', err);
+            return { error: err.message };
+        }
+    });
+    ipcMain.handle('get-total-games-played', async (event, playerName) => {
+        try {
+            return await database.getTotalGamesPlayed(playerName); // Fetch total games played
+        } catch (err) {
+            console.error('Error fetching total games played:', err);
+            return { error: err.message };
+        }
+    });
+    ipcMain.handle('get-players-by-age', async (event, age) => {
+        try {
+            return await database.getPlayersByAge(age); // Fetch players by age
+        } catch (err) {
+            console.error('Error fetching players by age:', err);
+            return { error: err.message };
+        }
+    });
+    ipcMain.handle('get-players-by-position', async (event, position) => {
+        try {
+            return await database.getPlayersByPosition(position); // Fetch players by position
+        } catch (err) {
+            console.error('Error fetching players by position:', err);
+            return { error: err.message };
+        }
+    });
+    ipcMain.handle('get-players-by-team', async (event, teamName, page = 1, limit = 20) => {
+        try {
+            return await database.getPlayersByTeam(teamName, page, limit); // Fetch players by team name with pagination
+        } catch (err) {
+            console.error('Error fetching players by team:', err);
+            return { error: err.message };
+        }
+    });
+
+
 
 });
 

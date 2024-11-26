@@ -2,20 +2,18 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 // Import your components
 import Home from '@/views/Home.vue';
-import About from '@/views/About.vue';
-import Players from '@/views/Players.vue';
 import SimpleSearch from "@/views/SimpleSearch.vue";
-import Search from '@/views/Search.vue';
 import TeamHistory from "@/views/TeamHistory.vue";
+import PlayerInfo from "@/views/PlayerInfo.vue";
+import Players from "@/views/Players.vue";
 
 // Define routes
 const routes = [
     { path: '/', component: Home },
-    { path: '/about', component: About },
-    { path: '/players', component: Players },
-    { path: '/teams', component: SimpleSearch },
+    { path: '/simplesearch', component: SimpleSearch },
     { path: '/teamhistory', component: TeamHistory },
-    { path: '/search', component: Search },
+    { path: '/playerinfo', component: PlayerInfo },
+    { path: '/players', component: Players },
 ];
 
 // Create the router instance

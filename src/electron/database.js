@@ -141,6 +141,147 @@ export function getPlayersByName(playerName, page = 1, limit = 20) {
     });
 }
 
+export function getGamesPlayed(playerName, seasonYear) {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT SUM(DISTINCT pi."Games played") AS "Total Games Played"
+            FROM PlayedIn pi
+            JOIN Player p ON p."Player ID" = pi."Player ID"
+            JOIN Season s ON pi.Year = s.Year
+            WHERE p."Player Name" LIKE ? AND s.Year = ?;
+        `;
+        db.all(query, [`%${playerName}%`, seasonYear], (err, rows) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(rows); // Return the result
+            }
+        });
+    });
+}
+
+export function getGamesScored(playerName, seasonYear) {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT SUM(DISTINCT pi."Games Scored") AS "Total Games Scored"
+            FROM PlayedIn pi
+            JOIN Player p ON p."Player ID" = pi."Player ID"
+            JOIN Season s ON pi.Year = s.Year
+            WHERE p."Player Name" LIKE ? AND s.Year = ?;
+        `;
+        db.all(query, [`%${playerName}%`, seasonYear], (err, rows) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(rows); // Return the result
+            }
+        });
+    });
+}
+
+export function getTotalGamesScored(playerName) {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT SUM(DISTINCT pi."Games Scored") AS "Total Games Scored"
+            FROM PlayedIn pi
+            JOIN Player p ON p."Player ID" = pi."Player ID"
+            JOIN Season s ON pi.Year = s.Year
+            WHERE p."Player Name" LIKE ?;
+        `;
+        db.all(query, [`%${playerName}%`], (err, rows) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(rows); // Return the result
+            }
+        });
+    });
+}
+
+export function getTotalGamesPlayed(playerName) {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT SUM(DISTINCT pi."Games played") AS "Total Games Played"
+            FROM PlayedIn pi
+            JOIN Player p ON p."Player ID" = pi."Player ID"
+            JOIN Season s ON pi.Year = s.Year
+            WHERE p."Player Name" LIKE ?;
+        `;
+        db.all(query, [`%${playerName}%`], (err, rows) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(rows); // Return the result
+            }
+        });
+    });
+}
+
+export function getPlayersByAge(age) {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT "Player Name"
+            FROM Player
+            WHERE Age = ?;
+        `;
+        db.all(query, [age], (err, rows) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(rows); // Return the result
+            }
+        });
+    });
+}
+
+export function getPlayersByPosition(position) {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT "Player Name"
+            FROM Player
+            WHERE position = ?;
+        `;
+        db.all(query, [position], (err, rows) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(rows); // Return the result
+            }
+        });
+    });
+}
+
+export function getPlayersByTeam(teamName, page = 1, limit = 20) {
+    return new Promise((resolve, reject) => {
+        const offset = (page - 1) * limit; // Calculate the offset based on the page number
+        const query = `
+            SELECT DISTINCT pf."Player ID", t.C1 AS "Team", p."Player Name", s."Year" AS "Season"
+            FROM Teams t
+            JOIN PlaysFor pf ON t.C1 = pf."Team Name"
+            JOIN Player p ON pf."Player ID" = p."Player ID"
+            JOIN PlayedIn pi ON pi."Player ID" = p."Player ID"
+            JOIN Season s ON s."Year" = pi."Year"
+            WHERE t.C1 LIKE ?
+            LIMIT ? OFFSET ?;  -- Use LIMIT and OFFSET for pagination
+        `;
+        db.all(query, [`%${teamName}%`, limit, offset], (err, rows) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(rows); // Return the player data
+            }
+        });
+    });
+}
+
+
 
 // In database.js
 export function executeQuery(query, params) {
@@ -163,5 +304,13 @@ export default {
     getPlayersWithRushingTD,
     getPlayersWithReceivingTD,
     getPlayersWithPRTD,
-    getPlayersByName
+    getPlayersByName,
+    getGamesPlayed,
+    getGamesScored,
+    getTotalGamesScored,
+    getTotalGamesPlayed,
+    getPlayersByAge,
+    getPlayersByPosition,
+    getPlayersByTeam,
+
 };

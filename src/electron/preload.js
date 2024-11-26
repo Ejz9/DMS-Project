@@ -8,4 +8,12 @@ contextBridge.exposeInMainWorld('api', {
     getPlayersWithReceivingTD: () => ipcRenderer.invoke('get-player-with-receivingTD'),
     getPlayersWithPRTD: () => ipcRenderer.invoke('get-player-with-prtd'),
     getPlayersByName: (name) => ipcRenderer.invoke('get-players-by-name', name),
+    getGamesPlayed: (playerName, seasonYear) => ipcRenderer.invoke('get-games-played', playerName, seasonYear),
+    getGamesScored: (playerName, seasonYear) => ipcRenderer.invoke('get-games-scored', playerName, seasonYear),
+    getTotalGamesScored: (playerName) => ipcRenderer.invoke('get-total-games-scored', playerName),
+    getTotalGamesPlayed: (playerName) => ipcRenderer.invoke('get-total-games-played', playerName),
+    getPlayersByAge: (age) => ipcRenderer.invoke('get-players-by-age', age),
+    getPlayersByPosition: (position) => ipcRenderer.invoke('get-players-by-position', position),
+    getPlayersByTeam: (teamName, page, limit) => ipcRenderer.invoke('get-players-by-team', teamName, page, limit),
+
 });
