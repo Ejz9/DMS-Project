@@ -1,5 +1,6 @@
 import {app, BrowserWindow, ipcMain} from 'electron';
 import path from 'path';
+import database from './database.js'; // Assuming this file is using ES module syntax
 
 if (process.env.NODE_ENV === 'development') {
     try {
@@ -9,8 +10,6 @@ if (process.env.NODE_ENV === 'development') {
         console.error('Failed to load electron-reloader:', err);
     }
 }
-
-import database from './database.js'; // Assuming this file is using ES module syntax
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -42,7 +41,7 @@ app.whenReady().then(() => {
             return await database.getPlayersBySeason(season);
         } catch (err) {
             console.error('Error fetching players by season:', err);
-            return { error: err.message };
+            return {error: err.message};
         }
     });
 
@@ -52,10 +51,22 @@ app.whenReady().then(() => {
             return await database.getPlayerStats(player);
         } catch (err) {
             console.error('Error fetching player stats:', err);
-            return { error: err.message };
+            return {error: err.message};
+        }
+    });
+    ipcMain.handle('get-player-with-rushingTD', async () => {
+        try {
+            console.log('Fetching players with rushing TDs'); // Log when the handler is called
+            const players = await database.getPlayersWithRushingTD();
+            console.log('Players with rushing TDs (from main process):', players); // Log the fetched players
+            return players;
+        } catch (err) {
+            console.error('Error fetching player stats:', err);
+            return {error: err.message};
         }
     });
 });
+
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();

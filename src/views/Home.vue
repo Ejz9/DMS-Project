@@ -15,6 +15,18 @@
       </b-field>
     </div>
 
+    <!-- Select Search Type -->
+    <div>
+    <b-select v-model="searchType" placeholder="Select Search Type">
+      <option value="playerByName">Player by Name</option>
+      <option value="playerByTeam">Player by Team</option>
+      <option value="gamesBySeason">Games by Season</option>
+      <option value="playersByPosition">Players by Position</option>
+      <option value="playersByAge">Players by Age</option>
+      <!-- Add more options as necessary -->
+    </b-select>
+    </div>
+
     <!-- Display currently searching value -->
     <p>Currently searching for: {{ searchQuery }}</p>
 
@@ -38,6 +50,7 @@
     </b-message>
   </div>
 </template>
+
 
 <script>
 export default {

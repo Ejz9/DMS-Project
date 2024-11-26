@@ -26,9 +26,9 @@
         <!-- Navigation Links -->
         <template #start>
           <b-navbar-item tag="router-link" :to="{ path: '/' }"><strong>Home</strong></b-navbar-item>
+          <b-navbar-item tag="router-link" :to="{ path: '/teams' }">Simple Search</b-navbar-item>
           <b-navbar-item tag="router-link" :to="{ path: '/about' }">About</b-navbar-item>
           <b-navbar-item tag="router-link" :to="{ path: '/players' }">Players</b-navbar-item>
-          <b-navbar-item tag="router-link" :to="{ path: '/teams' }">Teams</b-navbar-item>
           <b-navbar-item tag="router-link" :to="{ path: '/search' }">Search</b-navbar-item>
         </template>
       </b-navbar>

@@ -4,7 +4,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import About from '@/views/About.vue';
 import Players from '@/views/Players.vue';
-import Teams from '@/views/Teams.vue';
+import SimpleSearch from "@/views/SimpleSearch.vue";
 import Search from '@/views/Search.vue';
 
 // Define routes
@@ -12,7 +12,7 @@ const routes = [
     { path: '/', component: Home },
     { path: '/about', component: About },
     { path: '/players', component: Players },
-    { path: '/teams', component: Teams },
+    { path: '/teams', component: SimpleSearch },
     { path: '/search', component: Search },
 ];
 

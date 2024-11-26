@@ -1,7 +1,7 @@
 import sqlite3 from 'sqlite3'; // ES module import
 import path from 'path';
 
-const dbPath = path.resolve('DMS-Project.sqlite');
+const dbPath = path.resolve('DMS-Project');
 
 // Open the SQLite database
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -59,8 +59,66 @@ export function getPlayerStats(player, sortBy = 'Season', sortOrder = 'ASC', fil
     });
 }
 
+export function getPlayersWithRushingTD() {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT DISTINCT p."Player Name"
+            FROM Player p
+            JOIN Touchdowns t ON p."player ID" = t."Touchdown ID"
+            WHERE t."Rushing TDs" > 0;
+        `;
+        db.all(query, [], (err, rows) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                console.log('Players with rushing TDs:', rows); // Log the query result
+                resolve(rows);
+            }
+        });
+    });
+}
+
+
+export function getPlayersWithReceivingTD() {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT DISTINCT p.name
+            FROM Players p
+            JOIN Touchdowns t ON p.playerID = t.touchdownID
+            WHERE t.receivingTD > 0;
+        `;
+        db.all(query, [], (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+}
+
+
+
+
+// In database.js
+export function executeQuery(query, params) {
+    return new Promise((resolve, reject) => {
+        db.all(query, params, (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+}
+
+
 // Add this export to enable the default import in main.js
 export default {
     getPlayersBySeason,
-    getPlayerStats
+    getPlayerStats,
+    executeQuery,
+    getPlayersWithRushingTD
 };

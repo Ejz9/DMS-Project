@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import About from '@/views/About.vue';
 import Players from '@/views/Players.vue';
-import Teams from '@/views/Teams.vue';
+import Teams from '@/views/SimpleSearch.vue';
 import Search from '@/views/Search.vue';
 
 // Define routes
