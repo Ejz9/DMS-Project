@@ -1,5 +1,5 @@
 // main.js
-import './assets/styles.css';  // Make sure this is the correct path to your Tailwind CSS file
+import './assets/styles.css';
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
