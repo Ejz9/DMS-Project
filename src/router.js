@@ -6,6 +6,7 @@ import About from '@/views/About.vue';
 import Players from '@/views/Players.vue';
 import SimpleSearch from "@/views/SimpleSearch.vue";
 import Search from '@/views/Search.vue';
+import TeamHistory from "@/views/TeamHistory.vue";
 
 // Define routes
 const routes = [
@@ -13,6 +14,7 @@ const routes = [
     { path: '/about', component: About },
     { path: '/players', component: Players },
     { path: '/teams', component: SimpleSearch },
+    { path: '/teamhistory', component: TeamHistory },
     { path: '/search', component: Search },
 ];
 

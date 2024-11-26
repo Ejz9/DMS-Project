@@ -79,26 +79,67 @@ export function getPlayersWithRushingTD() {
     });
 }
 
-
 export function getPlayersWithReceivingTD() {
     return new Promise((resolve, reject) => {
         const query = `
-            SELECT DISTINCT p.name
-            FROM Players p
-            JOIN Touchdowns t ON p.playerID = t.touchdownID
-            WHERE t.receivingTD > 0;
+            SELECT DISTINCT p."Player Name"
+            FROM Player p
+            JOIN Touchdowns t ON p."Player ID" = t."Touchdown ID"
+            WHERE t."Receiving TDs" > 0;
         `;
         db.all(query, [], (err, rows) => {
             if (err) {
+                console.error('Error executing query:', err);
                 reject(err);
             } else {
-                resolve(rows);
+                resolve(rows); // Return the player data
             }
         });
     });
 }
 
+export function getPlayersWithPRTD() {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT DISTINCT p."Player Name"
+            FROM Player p
+            JOIN Touchdowns t ON p."Player ID" = t."Touchdown ID"
+            WHERE t."PR TD" > 0;
+        `;
+        db.all(query, [], (err, rows) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(rows); // Return the player data
+            }
+        });
+    });
+}
 
+export function getPlayersByName(playerName, page = 1, limit = 20) {
+    return new Promise((resolve, reject) => {
+        const offset = (page - 1) * limit; // Calculate the offset based on the page number
+        const query = `
+            SELECT DISTINCT pf."Player ID", t.C1 AS "Team", p."Player Name", s."Year" AS "Season"
+            FROM Teams t
+            JOIN PlaysFor pf ON t.C1 = pf."Team Name"
+            JOIN Player p ON pf."Player ID" = p."Player ID"
+            JOIN PlayedIn pi ON pi."Player ID" = p."Player ID"
+            JOIN Season s ON s."Year" = pi."Year"
+            WHERE p."Player Name" LIKE ?
+            LIMIT ? OFFSET ?;  -- Use LIMIT and OFFSET for pagination
+        `;
+        db.all(query, [`%${playerName}%`, limit, offset], (err, rows) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(rows); // Return the player data
+            }
+        });
+    });
+}
 
 
 // In database.js
@@ -114,11 +155,13 @@ export function executeQuery(query, params) {
     });
 }
 
-
 // Add this export to enable the default import in main.js
 export default {
     getPlayersBySeason,
     getPlayerStats,
-    executeQuery,
-    getPlayersWithRushingTD
+    //executeQuery,
+    getPlayersWithRushingTD,
+    getPlayersWithReceivingTD,
+    getPlayersWithPRTD,
+    getPlayersByName
 };

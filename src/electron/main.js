@@ -65,6 +65,31 @@ app.whenReady().then(() => {
             return {error: err.message};
         }
     });
+    ipcMain.handle('get-player-with-receivingTD', async () => {
+        try {
+            return await database.getPlayersWithReceivingTD(); // Fetch players with receiving touchdowns
+        } catch (err) {
+            console.error('Error fetching player stats:', err);
+            return { error: err.message };
+        }
+    });
+    ipcMain.handle('get-player-with-prtd', async () => {
+        try {
+            return await database.getPlayersWithPRTD(); // Fetch players with Punt Return TDs
+        } catch (err) {
+            console.error('Error fetching player stats:', err);
+            return { error: err.message };
+        }
+    });
+    ipcMain.handle('get-players-by-name', async (event, playerName, page = 1, limit = 20) => {
+        try {
+            return await database.getPlayersByName(playerName, page, limit); // Fetch players by name with pagination
+        } catch (err) {
+            console.error('Error fetching player team history:', err);
+            return { error: err.message };
+        }
+    });
+
 });
 
 

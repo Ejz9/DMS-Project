@@ -4,6 +4,8 @@
     <div>
       <b-select v-model="searchType" @change="simpleInput" placeholder="Select Search Type">
         <option value="getPlayersWithRushingTD">Players with Rushing TDs</option>
+        <option value="getPlayersWithReceivingTD">Players with Receiving TDs</option>
+        <option value="getPlayersWithPRTD">Players with Punt Return TDs</option> <!-- New option -->
         <option value="playerByTeam">Players who scored a receiving touchdown</option>
         <option value="gamesBySeason">Games by Season</option>
         <option value="playersByPosition">Players by Position</option>
@@ -32,8 +34,8 @@ export default {
     return {
       searchQuery: "",
       results: [],
-      searchType: "",
-      loading: false, // Show loading state
+      searchType: "", // Initially set to empty string or another default value
+      loading: false, // Add a loading state
     };
   },
 
@@ -45,16 +47,34 @@ export default {
       try {
         switch (this.searchType) {
           case 'getPlayersWithRushingTD':
-            const players = await window.api.getPlayersWithRushingTD(); // Get the players from the main process
-            console.log('Fetched players:', players);
-            if (players.length > 0) {
-              this.results = players;
+            const rushingPlayers = await window.api.getPlayersWithRushingTD(); // Get players with rushing touchdowns
+            console.log('Fetched players with rushing TDs:', rushingPlayers);
+            this.results = rushingPlayers;
+            break;
+
+          case 'getPlayersWithReceivingTD':
+            const receivingPlayers = await window.api.getPlayersWithReceivingTD(); // Get players with receiving touchdowns
+            console.log('Fetched players with receiving TDs:', receivingPlayers);
+            if (receivingPlayers.length > 0) {
+              this.results = receivingPlayers;
             } else {
-              console.log('No players found with rushing touchdowns.');
+              console.log('No players found with receiving touchdowns.');
               this.results = [];
             }
             break;
-            // Handle other search types...
+
+          case 'getPlayersWithPRTD': // New case for Punt Return TDs
+            const prtdPlayers = await window.api.getPlayersWithPRTD(); // Get players with Punt Return TDs
+            console.log('Fetched players with Punt Return TDs:', prtdPlayers);
+            if (prtdPlayers.length > 0) {
+              this.results = prtdPlayers;
+            } else {
+              console.log('No players found with Punt Return Touchdowns.');
+              this.results = [];
+            }
+            break;
+
+            // Handle other search types here...
           default:
             break;
         }
