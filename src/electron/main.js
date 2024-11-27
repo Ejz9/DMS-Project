@@ -145,6 +145,15 @@ app.whenReady().then(() => {
             return { error: err.message };
         }
     });
+    ipcMain.handle('getPlayerCountBySeason', async (event, seasonYear) => {
+        try {
+            const count = await database.getPlayerCountBySeason(seasonYear);
+            return count;
+        } catch (error) {
+            console.error('Error fetching player count for season:', error);
+            return { error: error.message };
+        }
+    });
 
 
 

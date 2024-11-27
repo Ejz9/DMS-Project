@@ -281,7 +281,25 @@ export function getPlayersByTeam(teamName, page = 1, limit = 20) {
     });
 }
 
-
+export function getPlayerCountBySeason(seasonYear) {
+    return new Promise((resolve, reject) => {
+        const query = `
+      SELECT COUNT(distinct p."Player ID")
+      FROM Player p
+      JOIN PlayedIn pi ON p."Player ID" = pi."Player ID"
+      JOIN Season s ON s.Year = pi.Year
+      WHERE s.Year = ?;
+    `;
+        db.get(query, [seasonYear], (err, row) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(row); // Return the player count
+            }
+        });
+    });
+}
 
 // In database.js
 export function executeQuery(query, params) {
@@ -312,5 +330,6 @@ export default {
     getPlayersByAge,
     getPlayersByPosition,
     getPlayersByTeam,
+    getPlayerCountBySeason,
 
 };
