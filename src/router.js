@@ -6,6 +6,7 @@ import SimpleSearch from "@/views/SimpleSearch.vue";
 import TeamHistory from "@/views/TeamHistory.vue";
 import PlayerInfo from "@/views/PlayerInfo.vue";
 import Players from "@/views/Players.vue";
+import Procedures from "@/views/Procedures.vue";
 
 // Define routes
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
     { path: '/teamhistory', component: TeamHistory },
     { path: '/playerinfo', component: PlayerInfo },
     { path: '/players', component: Players },
+    { path: '/procedures', component: Procedures },
 ];
 
 // Create the router instance

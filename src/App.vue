@@ -30,6 +30,7 @@
           <b-navbar-item tag="router-link" :to="{ path: '/teamhistory' }">Team History</b-navbar-item>
           <b-navbar-item tag="router-link" :to="{ path: '/playerinfo' }">Player Info</b-navbar-item>
           <b-navbar-item tag="router-link" :to="{ path: '/players' }">Players</b-navbar-item>
+          <b-navbar-item tag="router-link" :to="{ path: '/procedures' }">Procedures</b-navbar-item>
         </template>
       </b-navbar>
     </header>

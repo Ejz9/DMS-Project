@@ -301,6 +301,66 @@ export function getPlayerCountBySeason(seasonYear) {
     });
 }
 
+export function getNumPlayersScored(year) {
+    return new Promise((resolve, reject) => {
+        const query = `
+      SELECT COUNT(distinct p."Player Name")
+      FROM Player p
+      JOIN PlayedIn pi ON p."Player ID" = pi."Player ID"
+      JOIN Season s ON s.Year = pi.Year
+      WHERE s.Year = ? AND pi."Games Scored" > 0;
+    `;
+
+        db.get(query, [year], (err, row) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(row); // This should return the count of players who scored
+            }
+        });
+    });
+}
+
+export function getAllPlayerNames() {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT distinct "Player Name"
+            FROM Player
+    `;
+
+        db.all(query, [], (err, rows) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(rows); // This will return an array of player names
+            }
+        });
+    });
+}
+
+
+export function getAllTeamNames() {
+    return new Promise((resolve, reject) => {
+        const query = `
+      SELECT DISTINCT "C1"
+      FROM Teams
+    `;
+
+        db.all(query, [], (err, rows) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                reject(err);
+            } else {
+                resolve(rows); // This will return an array of team names
+            }
+        });
+    });
+}
+
+
+
 // In database.js
 export function executeQuery(query, params) {
     return new Promise((resolve, reject) => {
@@ -331,5 +391,9 @@ export default {
     getPlayersByPosition,
     getPlayersByTeam,
     getPlayerCountBySeason,
+    getNumPlayersScored,
+    getAllPlayerNames,
+    getAllTeamNames,
+
 
 };

@@ -16,5 +16,7 @@ contextBridge.exposeInMainWorld('api', {
     getPlayersByPosition: (position) => ipcRenderer.invoke('get-players-by-position', position),
     getPlayersByTeam: (teamName, page, limit) => ipcRenderer.invoke('get-players-by-team', teamName, page, limit),
     getPlayerCountBySeason: (seasonYear) => ipcRenderer.invoke('getPlayerCountBySeason', seasonYear),
-
+    getNumPlayersScored: (seasonYear) => ipcRenderer.invoke('get-num-players-scored', seasonYear),
+    getAllPlayerNames: () => ipcRenderer.invoke('get-all-player-names'),
+    getAllTeamNames: () => ipcRenderer.invoke('get-all-team-names'),
 });

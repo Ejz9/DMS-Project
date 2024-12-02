@@ -154,6 +154,34 @@ app.whenReady().then(() => {
             return { error: error.message };
         }
     });
+    ipcMain.handle('get-num-players-scored', async (event, seasonYear) => {
+        try {
+            const count = await database.getNumPlayersScored(seasonYear);
+            return count;  // Return the result to the renderer
+        } catch (error) {
+            console.error('Error fetching number of players who scored:', error);
+            return { error: error.message };
+        }
+    });
+    ipcMain.handle('get-all-player-names', async () => {
+        try {
+            const playerNames = await database.getAllPlayerNames();
+            return playerNames;  // Return the list of player names
+        } catch (error) {
+            console.error('Error fetching player names:', error);
+            return { error: error.message };
+        }
+    });
+    ipcMain.handle('get-all-team-names', async () => {
+        try {
+            const teamNames = await database.getAllTeamNames();
+            return teamNames;  // Return the list of team names
+        } catch (error) {
+            console.error('Error fetching team names:', error);
+            return { error: error.message };
+        }
+    });
+
 
 
 
