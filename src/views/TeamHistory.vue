@@ -79,7 +79,6 @@ export default {
     },
 
     async fetchPlayerHistory() {
-      // Only fetch if player name is provided
       if (!this.playerName) {
         this.results = [];
         return;
@@ -93,7 +92,7 @@ export default {
 
         if (players.length > 0) {
           if (this.page === 1) {
-            this.results = players; // Set results for the first page
+            this.results = players;
           } else {
             this.results = [...this.results, ...players]; // Append more results for subsequent pages
           }
@@ -110,7 +109,6 @@ export default {
     },
 
     async fetchPlayersByTeam() {
-      // Only fetch if team name is provided
       if (!this.teamName) {
         this.results = [];
         return;
@@ -118,13 +116,12 @@ export default {
 
       this.loading = true;
       try {
-        // Fetch players who played for the specified team
         const players = await window.api.getPlayersByTeam(this.teamName, this.page, this.limit);
         console.log('Fetched players for team:', players);
 
         if (players.length > 0) {
           if (this.page === 1) {
-            this.results = players; // Set results for the first page
+            this.results = players;
           } else {
             this.results = [...this.results, ...players]; // Append more results
           }
@@ -151,7 +148,6 @@ export default {
 </script>
 
 <style scoped>
-/* Optional: Add custom styles for the results */
 ul {
   padding-left: 0;
   list-style-type: none;

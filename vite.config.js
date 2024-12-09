@@ -4,15 +4,15 @@ import {viteStaticCopy} from "vite-plugin-static-copy";
 
 export default defineConfig({
     optimizeDeps: {
-        include: ['vue', 'vue-router'], // Add any major dependencies here
+        include: ['vue', 'vue-router'],
     },
     plugins: [
         vue(),
         viteStaticCopy({
             targets: [
                 {
-                    src: 'public/index.html', // Path to your HTML file
-                    dest: '' // Copy it to the root of the `dist` directory
+                    src: 'public/index.html',
+                    dest: ''
                 }
             ]
         })
@@ -23,14 +23,14 @@ export default defineConfig({
         }
     },
     server: {
-        hmr: true, // Enable Hot Module Replacement (HMR)
-        port: 5173, // Default port for Vite
+        hmr: true,
+        port: 5173,
     },
     build: {
-        outDir: 'dist', // Adjust to match your Electron expectations
+        outDir: 'dist',
         emptyOutDir: true,
         rollupOptions: {
-            input: 'src/main.js', // Replace with your app's main entry file
+            input: 'src/main.js',
         },
     }
 });

@@ -1,6 +1,11 @@
 <template>
   <div class="container">
 
+
+    <b-message title="ALERT: In Progress!" type="is-info">
+      <p>This page currently in is progress! Come back soon to check when it's updated!</p>
+    </b-message>
+
     <!-- Search Box -->
     <div class="search-container">
       <b-field label="Search for stats:">
@@ -23,7 +28,6 @@
       <option value="gamesBySeason">Games by Season</option>
       <option value="playersByPosition">Players by Position</option>
       <option value="playersByAge">Players by Age</option>
-      <!-- Add more options as necessary -->
     </b-select>
     </div>
 
@@ -85,7 +89,7 @@ export default {
 
     searchForPlayer() {
       if (this.searchQuery.length > 0) {
-        this.results = [{ name: "Tom Brady" }, { name: "Aaron Rodgers" }];
+        this.results = [];
       } else {
         this.results = [];
       }
@@ -122,7 +126,7 @@ export default {
 /* Shrink and center the search box */
 .input {
   width: 50%; /* Controls size of the search box */
-  max-width: 500px; /* Max width */
+  max-width: 500px;
   padding: 0.5rem;
   font-size: 1.2rem;
 }

@@ -13,7 +13,7 @@
     <!-- Header with Navbar -->
     <header>
       <b-navbar>
-        <!-- Brand Logo -->
+        <!-- Logo -->
         <template #brand>
           <b-navbar-item tag="router-link" :to="{ path: '/' }">
             <img
@@ -30,7 +30,7 @@
           <b-navbar-item tag="router-link" :to="{ path: '/teamhistory' }">Team History</b-navbar-item>
           <b-navbar-item tag="router-link" :to="{ path: '/playerinfo' }">Player Info</b-navbar-item>
           <b-navbar-item tag="router-link" :to="{ path: '/players' }">Players</b-navbar-item>
-          <b-navbar-item tag="router-link" :to="{ path: '/procedures' }">Procedures</b-navbar-item>
+          <!--<b-navbar-item tag="router-link" :to="{ path: '/procedures' }">Procedures</b-navbar-item>-->
         </template>
       </b-navbar>
     </header>
@@ -46,7 +46,6 @@
 </script>
 
 <style>
-/* Add your custom styles here */
 body {
   font-family: Arial, sans-serif;
 }

@@ -1,5 +1,5 @@
 {
-  "name": "vue-electron-app",
+  "name": "nfl-stats-viewer",
   "version": "1.0.0",
   "main": "src/electron/main.js",
   "type": "module",
@@ -10,9 +10,9 @@
     "build": "vite build",
     "start": "npm run build && electron src/electron/main.js"
   },
-  "author": "Edward Zurakowski, Nina Malak, Zak ",
+  "author": "Edward Zurakowski, Nina Malak, Zak Shore",
   "license": "ISC",
-  "description": "",
+  "description": "Basic NFL Stats viewer with data from 1922-2022",
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.0",
     "concurrently": "^9.1.0",

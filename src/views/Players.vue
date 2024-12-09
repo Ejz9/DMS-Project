@@ -115,15 +115,6 @@ export default {
 </script>
 
 <style scoped>
-/* Optional: Add custom styles for inputs and results */
-.input {
-  margin-bottom: 1rem;
-}
-
-button {
-  margin-top: 1rem;
-}
-
 ul {
   padding-left: 0;
   list-style-type: none;

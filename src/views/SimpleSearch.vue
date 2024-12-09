@@ -6,10 +6,10 @@
         <option value="getPlayersWithRushingTD">Players with Rushing TDs</option>
         <option value="getPlayersWithReceivingTD">Players with Receiving TDs</option>
         <option value="getPlayersWithPRTD">Players with Punt Return TDs</option> <!-- New option -->
-        <option value="playerByTeam">Players who scored a receiving touchdown</option>
-        <option value="gamesBySeason">Games by Season</option>
-        <option value="playersByPosition">Players by Position</option>
-        <option value="playersByAge">Players by Age</option>
+<!--        <option value="playerByTeam">Players who scored a receiving touchdown</option>-->
+<!--        <option value="gamesBySeason">Games by Season</option>-->
+<!--        <option value="playersByPosition">Players by Position</option>-->
+<!--        <option value="playersByAge">Players by Age</option>-->
       </b-select>
     </div>
 
@@ -34,7 +34,7 @@ export default {
     return {
       searchQuery: "",
       results: [],
-      searchType: "", // Initially set to empty string or another default value
+      searchType: "",
       loading: false, // Add a loading state
     };
   },
@@ -63,7 +63,7 @@ export default {
             }
             break;
 
-          case 'getPlayersWithPRTD': // New case for Punt Return TDs
+          case 'getPlayersWithPRTD':
             const prtdPlayers = await window.api.getPlayersWithPRTD(); // Get players with Punt Return TDs
             console.log('Fetched players with Punt Return TDs:', prtdPlayers);
             if (prtdPlayers.length > 0) {
@@ -74,7 +74,6 @@ export default {
             }
             break;
 
-            // Handle other search types here...
           default:
             break;
         }
@@ -91,15 +90,14 @@ export default {
 <style scoped>
 /* Scrollable Results Box */
 .scrollable-results {
-  max-height: 400px; /* Adjust the height as per your design */
+  max-height: 400px;
   overflow-y: auto; /* Enable vertical scrolling */
   margin-top: 20px;
-  border: 1px solid #ddd; /* Optional: add a border for better separation */
-  border-radius: 5px; /* Optional: rounded corners */
-  padding: 10px; /* Optional: padding inside the scrollable area */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
 }
 
-/* Optional: Styling the individual list items */
 .scrollable-results ul {
   padding: 0;
   list-style-type: none;

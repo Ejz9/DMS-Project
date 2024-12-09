@@ -3,7 +3,7 @@ import path from 'path';
 
 const dbPath = path.resolve('DMS-Project');
 
-// Open the SQLite database
+// Open the database / database connection
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error opening database:', err.message);
@@ -362,7 +362,7 @@ export function getAllTeamNames() {
 
 
 // In database.js
-export function executeQuery(query, params) {
+/*export function executeQuery(query, params) {
     return new Promise((resolve, reject) => {
         db.all(query, params, (err, rows) => {
             if (err) {
@@ -372,7 +372,7 @@ export function executeQuery(query, params) {
             }
         });
     });
-}
+} */
 
 // Add this export to enable the default import in main.js
 export default {

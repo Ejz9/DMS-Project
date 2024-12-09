@@ -174,25 +174,22 @@ export default {
       }
     },
 
-    // New method to fetch the count of players for a given season
     async fetchPlayerCountBySeason() {
       if (!this.seasonYear) return;
 
       this.loading = true;
       try {
-        // Call the backend API to fetch the player count for the season
         const response = await window.api.getPlayerCountBySeason(this.seasonYear);
         console.log("Fetched player count for season:", response);
 
-        // Access the count value directly from the response object
         if (response && response["COUNT(distinct p.\"Player ID\")"] !== undefined) {
           this.playerCountResult = response["COUNT(distinct p.\"Player ID\")"];
         } else {
-          this.playerCountResult = null; // If the result is not as expected, set it to null
+          this.playerCountResult = null;
         }
       } catch (error) {
         console.error("Error fetching player count for season:", error);
-        this.playerCountResult = null; // Handle errors by setting result to null
+        this.playerCountResult = null;
       } finally {
         this.loading = false;
       }

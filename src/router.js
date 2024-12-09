@@ -1,12 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
-// Import your components
+// Import components
 import Home from '@/views/Home.vue';
 import SimpleSearch from "@/views/SimpleSearch.vue";
 import TeamHistory from "@/views/TeamHistory.vue";
 import PlayerInfo from "@/views/PlayerInfo.vue";
 import Players from "@/views/Players.vue";
-import Procedures from "@/views/Procedures.vue";
+//import Procedures from "@/views/Procedures.vue";
 
 // Define routes
 const routes = [
@@ -15,12 +15,12 @@ const routes = [
     { path: '/teamhistory', component: TeamHistory },
     { path: '/playerinfo', component: PlayerInfo },
     { path: '/players', component: Players },
-    { path: '/procedures', component: Procedures },
+    //{ path: '/procedures', component: Procedures },
 ];
 
 // Create the router instance
 const router = createRouter({
-    history: createWebHashHistory(), // Use hash mode for Electron compatibility
+    history: createWebHashHistory(),
     routes,
 });
 

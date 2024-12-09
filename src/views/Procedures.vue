@@ -133,7 +133,6 @@ export default {
 </script>
 
 <style scoped>
-/* Optional: Add custom styles for the results */
 ul {
   padding-left: 0;
   list-style-type: none;

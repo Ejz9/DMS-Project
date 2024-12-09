@@ -1,6 +1,6 @@
 import {app, BrowserWindow, ipcMain} from 'electron';
 import path from 'path';
-import database from './database.js'; // Assuming this file is using ES module syntax
+import database from './database.js';
 
 if (process.env.NODE_ENV === 'development') {
     try {
@@ -99,7 +99,7 @@ app.whenReady().then(() => {
     });
     ipcMain.handle('get-games-scored', async (event, playerName, seasonYear) => {
         try {
-            return await database.getGamesScored(playerName, seasonYear); // Fetch total games scored
+            return await database.getGamesScored(playerName, seasonYear); // Fetch games scored in a season
         } catch (err) {
             console.error('Error fetching games scored:', err);
             return { error: err.message };

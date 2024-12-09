@@ -95,13 +95,12 @@ export default {
       }
 
       try {
-        // API call to get player stats from the database
         const result = await window.api.getPlayerStats(this.filterText);
 
         if (result.error) {
           alert("Error fetching player stats: " + result.error);
         } else {
-          this.filteredStats = result; // Assuming result is an array of player stats
+          this.filteredStats = result;
         }
       } catch (error) {
         alert("Error fetching player stats: " + error);
