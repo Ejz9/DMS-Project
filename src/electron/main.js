@@ -1,6 +1,10 @@
 import {app, BrowserWindow, ipcMain} from 'electron';
 import path from 'path';
 import database from './database.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 if (process.env.NODE_ENV === 'development') {
     try {
@@ -16,7 +20,7 @@ const createWindow = () => {
         width: 800,
         height: 600,
         webPreferences: {
-            preload: path.resolve('src/electron/preload.js'),
+            preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
             enableRemoteModule: false,
         },
@@ -28,7 +32,7 @@ const createWindow = () => {
         win.loadURL('http://localhost:5173/index.html'); // Load Vite Dev Server in development
     } else {
         console.log('Loading production build...');
-        win.loadFile(path.resolve('dist/index.html')); // Load built files in production
+        win.loadFile(path.join(__dirname, '..', '..', 'dist', 'index.html')); // Load built files in production
     }
 };
 

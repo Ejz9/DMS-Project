@@ -1,16 +1,34 @@
-import sqlite3 from 'sqlite3'; // ES module import
+//import { Client } from 'pg';
+import sqlite3 from 'sqlite3';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-const dbPath = path.resolve('DMS-Project');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const isDevelopment = process.env.NODE_ENV === 'development';
+const dbPath = isDevelopment
+    ? path.join(__dirname, '..', '..', 'DMS-Project') // Path during development
+    : path.join(process.resourcesPath, 'DMS-Project'); // Path when packaged
 
 // Open the database / database connection
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error opening database:', err.message);
     } else {
-        console.log('Connected to the DMS-Project database.');
+        console.log('Connected to the database at:', dbPath);
     }
 });
+
+/*const dbConfig = { (stored in path variables)
+    user: 'username',     // Replace with your PostgreSQL username
+    host: 'address',         // Replace with your host (if not localhost)
+    database: 'database', // Replace with your database name
+    password: 'password', // Replace with your database password
+    port: 5432,                // Default PostgreSQL port
+};*/
+
+
 
 // Function to get players for a specific season with optional player name filtering
 export function getPlayersBySeason(season, filter = '') {
@@ -376,6 +394,7 @@ export function getAllTeamNames() {
 
 // Add this export to enable the default import in main.js
 export default {
+    db,
     getPlayersBySeason,
     getPlayerStats,
     //executeQuery,
@@ -394,6 +413,5 @@ export default {
     getNumPlayersScored,
     getAllPlayerNames,
     getAllTeamNames,
-
 
 };
